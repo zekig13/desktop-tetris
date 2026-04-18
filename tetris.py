@@ -90,6 +90,15 @@ LEVEL_SPEEDS = [
 ]
 
 
+def build_fonts():
+    return (
+        pygame.font.SysFont("segoeui", 34, bold=True),
+        pygame.font.SysFont("segoeui", 24, bold=True),
+        pygame.font.SysFont("segoeui", 18),
+        pygame.font.SysFont("segoeui", 38, bold=True),
+    )
+
+
 class TetrisGame:
     def __init__(self):
         self.restart()
@@ -312,17 +321,61 @@ def render(screen, game, fonts):
     pygame.display.flip()
 
 
+def build_showcase_game():
+    game = TetrisGame()
+    layout = [
+        "..........",
+        "..........",
+        "..........",
+        "..........",
+        "..........",
+        "..........",
+        "..........",
+        "...T......",
+        "...TT.....",
+        "...T......",
+        "..SS......",
+        ".SS..OO...",
+        ".J...OO...",
+        ".JJJ..L...",
+        "..ZZ.LL...",
+        "...ZZ.L...",
+        "IIIII.....",
+        "TT..SS.JJ.",
+        "TTOOSSJJL.",
+        "ZZOOLLJLL.",
+    ]
+    game.board = [
+        [cell if cell != "." else EMPTY for cell in row]
+        for row in layout
+    ]
+    game.score = 4820
+    game.lines = 27
+    game.level = 3
+    game.current = {"kind": "I", "rotation": 1, "x": 4, "y": 2}
+    game.next_piece = "Z"
+    game.game_over = False
+    game.paused = False
+    return game
+
+
+def export_screenshot(output_path):
+    os.environ["SDL_VIDEODRIVER"] = "dummy"
+    pygame.init()
+    pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    screen = pygame.display.get_surface()
+    render(screen, build_showcase_game(), build_fonts())
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    pygame.image.save(screen, output_path)
+    pygame.quit()
+
+
 def run_game():
     pygame.init()
     pygame.display.set_caption("Tetris")
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     clock = pygame.time.Clock()
-    fonts = (
-        pygame.font.SysFont("segoeui", 34, bold=True),
-        pygame.font.SysFont("segoeui", 24, bold=True),
-        pygame.font.SysFont("segoeui", 18),
-        pygame.font.SysFont("segoeui", 38, bold=True),
-    )
+    fonts = build_fonts()
 
     game = TetrisGame()
     last_fall = pygame.time.get_ticks()
@@ -366,12 +419,7 @@ def run_self_test():
     pygame.init()
     pygame.display.set_mode((320, 240))
     game = TetrisGame()
-    fonts = (
-        pygame.font.SysFont("segoeui", 34, bold=True),
-        pygame.font.SysFont("segoeui", 24, bold=True),
-        pygame.font.SysFont("segoeui", 18),
-        pygame.font.SysFont("segoeui", 38, bold=True),
-    )
+    fonts = build_fonts()
     screen = pygame.display.get_surface()
     render(screen, game, fonts)
     pygame.quit()
@@ -380,5 +428,7 @@ def run_self_test():
 if __name__ == "__main__":
     if "--self-test" in sys.argv:
         run_self_test()
+    elif len(sys.argv) == 3 and sys.argv[1] == "--export-screenshot":
+        export_screenshot(sys.argv[2])
     else:
         run_game()
