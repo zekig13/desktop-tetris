@@ -2,6 +2,7 @@ Tetris hazir.
 
 Calistirmak icin:
 - "Tetris Oyna.cmd" dosyasina cift tikla.
+- Python 3 sistemde kurulu ve erisilebilir olmali.
 
 Kontroller:
 - Sol / Sag ok: Hareket

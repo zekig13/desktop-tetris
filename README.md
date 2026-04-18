@@ -11,13 +11,14 @@ Python ve `pygame` ile hazirlanmis, Windows'ta tek tikla acilabilen masaustu Tet
 - Ghost piece gorseli
 - Skor, satir ve seviye takibi
 - Duraklatma ve yeniden baslatma
-- Kurulu Python gerektirmeden proje icinde paketlenmis `pygame`
+- Windows'ta komut dosyasi ile hizli baslatma
 
 ## Calistirma
 
 ### Windows
 
 Klasor icindeki `Tetris Oyna.cmd` dosyasina cift tiklaman yeterli.
+Bu yontem sistemde erisilebilir bir Python 3 kurulumu oldugunda calisir.
 
 ### Python ile calistirma
 
